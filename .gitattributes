@@ -1,0 +1,8 @@
+# Normalize line endings on checkout so .bat files stay CRLF (cmd.exe is
+# picky) and text sources stay LF regardless of each cloner's autocrlf.
+* text=auto
+*.bat text eol=crlf
+*.py  text eol=lf
+*.js  text eol=lf
+*.md  text eol=lf
+*.txt text eol=lf
