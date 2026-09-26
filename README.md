@@ -40,10 +40,9 @@ itself, and the worker never pops from the queue while its connection is down.
       -> wss://127.0.0.1:8443/   bridge.py: rate limit, merge window, forward
       -> ws://127.0.0.1:8080/    Omara Scent Studio
 
-The worker emits a **greeting** scent the first time its socket opens each page
-load. It is not an answer and bypasses `DEDUPE_MS`. Treat it as a link test: if
-you smell the greeting, detection has not happened yet but every wire between
-the browser and the nozzle is live.
+Nothing sprays on connection — the first scent you should ever smell without
+answering something is the self-test (`run.bat selftest`), which proves every
+wire between the bridge and the nozzle without a browser at all.
 
 ## Setup
 
@@ -113,8 +112,10 @@ nothing typed into the console:
 ```
 [olfacts] active -> wss://127.0.0.1:8443/ top=true frames=0
 [olfacts] connected
-[olfacts] sent beach@0.6
 ```
+
+Nothing should spray at this point — `connected` is the whole confirmation.
+Grade an answer and you should then see `[olfacts] sent sweet@0.85`.
 
 and in the bridge window:
 
@@ -135,7 +136,6 @@ At the top of `olfacts.user.js`:
 | `BRIDGE_URL` | `wss://127.0.0.1:8443/` | must match the bridge listen port |
 | `CORRECT` | `sweet @ 0.85` | scent on a correct answer |
 | `WRONG` | `null` | set to emit on wrong answers; must be a valid cartridge |
-| `GREETING` | `beach @ 0.6` | once per page load when the socket first opens; `null` to disable |
 | `QUEUE_MAX` | `64` | answers buffered while the socket is down |
 | `DEDUPE_MS` | `1000` | one graded answer counts once, not twice. **Not** a rate limit |
 | `CONNECT_TIMEOUT_MS` | `4000` | how long to wait for the handshake before retrying |

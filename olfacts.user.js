@@ -16,13 +16,11 @@
   const BRIDGE_URL = "wss://127.0.0.1:8443/";
   const CORRECT    = { odor: "sweet", intensity: 0.85 };
   const WRONG      = null;              // e.g. { odor: "barnyard", intensity: 0.4 }
-  const GREETING   = { odor: "beach", intensity: 0.6 };   // once per page load; null to disable
   const QUEUE_MAX  = 64;                // buffered answers while the socket is down
 
   /* Dedupe, NOT rate limiting. The API interceptor and the DOM observer can
      both see one graded answer; without this a correct answer counts twice and
-     burns two slots of the bridge's cooldown window. Greetings bypass this --
-     they are not answers, and one page load means exactly one greeting. */
+     burns two slots of the bridge's cooldown window. */
   const DEDUPE_MS = 1000;
 
   const CONNECT_TIMEOUT_MS = 4000;      // longer than a loopback TLS handshake by enough
@@ -40,7 +38,6 @@
 "use strict";
 const URL_ = ${JSON.stringify(BRIDGE_URL)};
 const QUEUE_MAX = ${QUEUE_MAX};
-const GREETING = ${JSON.stringify(GREETING)};
 const CONNECT_TIMEOUT_MS = ${CONNECT_TIMEOUT_MS};
 const BACKOFF_START = ${BACKOFF_START}, BACKOFF_MAX = ${BACKOFF_MAX};
 
@@ -67,7 +64,7 @@ const outbox = new Ring(QUEUE_MAX);
 const stats = { produced: 0, sent: 0, dropped_queue: 0, rejected: 0, failed: 0, reconnects: 0 };
 
 let ws = null, backoff = BACKOFF_START, closing = false;
-let connectTimer = null, timedOut = false, greeted = false, started = false;
+let connectTimer = null, timedOut = false, started = false;
 
 function log(m) { self.postMessage({ type: "log", m }); }
 function clearTimer() { if (connectTimer) { clearTimeout(connectTimer); connectTimer = null; } }
@@ -101,10 +98,6 @@ function connect() {
     backoff = BACKOFF_START;
     if (outbox.size) stats.reconnects++;
     log("connected" + (outbox.size ? ", flushing " + outbox.size : ""));
-    if (GREETING && !greeted) {
-      greeted = true;                         // first open of this page load only
-      outbox.push({ odor: GREETING.odor, intensity: GREETING.intensity });
-    }
     flush();
   };
 

@@ -14,9 +14,9 @@ body:
     id: symptom
     attributes:
       label: What happened
-      description: What you expected, what you got, and whether any scent fired at all (including the greeting).
+      description: What you expected, what you got, and whether any scent fired at all.
       placeholder: |
-        Expected: beach scent on page load, sweet on a correct answer.
+        Expected: sweet on a correct answer.
         Got: nothing; console shows "Firefox can't establish a connection".
     validations:
       required: true
