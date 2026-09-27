@@ -1,6 +1,6 @@
 # OlFacts
 
-**Mark J. Kuebel** — BUSL-1.1, see `LICENSE`.
+BUSL-1.1, see `LICENSE`.
 
 Detects a correct answer on Quizlet and triggers a scent on an Omara Scent
 Studio device. Wrong answers can carry their own scent if you want the feedback.
