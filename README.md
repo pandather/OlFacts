@@ -209,7 +209,3 @@ that the browser is broken.
 | `olfacts.user.js` | detection + worker (buffer, socket; never limits) |
 | `bridge.py` | TLS front end, rate limiting, bounded forwarding to Omara |
 | `requirements.txt` | Python dependencies |
-
-Keep `test.py` out of the repo. Its test C enters `serve()`'s context manager
-without calling `serve_forever()`, so it reports a bind-then-timeout forever and
-will tell you the bridge is broken when it isn't.
