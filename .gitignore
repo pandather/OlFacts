@@ -1,4 +1,6 @@
 certs/
+v2/certs/
 __pycache__/
+v2/__pycache__/
 *.pyc
 .venv/
